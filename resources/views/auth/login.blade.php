@@ -1,35 +1,30 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Logowanie</h1>
 
-    @if ($errors->any())
-        <div style="color: red; margin-bottom: 10px;">
-            {{ $errors->first() }}
-        </div>
-    @endif
+<h2>Wejście do Hogwartu</h2>
+<p>Aby dostać się na teren zamku, podaj swoje dane.</p>
 
-    <form method="POST" action="{{ route('login.post') }}">
-        @csrf
-        <div>
-            <label for="login">Login:</label><br>
-            <input type="text" name="login" id="login" value="{{ old('login') }}">
-        </div>
+@if ($errors->any())
+    <div style="color: darkred; background:#f8d7da; padding:10px; margin-bottom:15px;">
+        {{ $errors->first() }}
+    </div>
+@endif
 
-        <div style="margin-top: 10px;">
-            <label for="password">Hasło:</label><br>
-            <input type="password" name="password" id="password">
-        </div>
+<form method="POST" action="{{ route('login.post') }}">
+    @csrf
 
-        <div style="margin-top: 10px;">
-            <label>
-                <input type="checkbox" name="remember">
-                Zapamiętaj mnie
-            </label>
-        </div>
+    <label for="login">Login czarodzieja:</label><br>
+    <input type="text" name="login" id="login"
+           style="width: 300px; padding:6px; margin-top:6px;"><br><br>
 
-        <div style="margin-top: 10px;">
-            <button type="submit" class="btn btn-primary">Zaloguj</button>
-        </div>
-    </form>
+    <label for="password">Hasło:</label><br>
+    <input type="password" name="password" id="password"
+           style="width: 300px; padding:6px; margin-top:6px;"><br><br>
+
+    <label><input type="checkbox" name="remember"> Zapamiętaj mnie</label><br><br>
+
+    <button style="padding:10px 18px; background:#3a2e1e; color:white; border:0;">Zaloguj</button>
+</form>
+
 @endsection

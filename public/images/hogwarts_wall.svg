@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400">
+  <defs>
+    <!-- bazowy kolor kamienia -->
+    <linearGradient id="stoneBase" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1f2733"/>
+      <stop offset="100%" stop-color="#11151d"/>
+    </linearGradient>
+
+    <!-- faktura kamienia -->
+    <filter id="stoneNoise">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/>
+      <feColorMatrix type="matrix"
+        values="0 0 0 0 0.6
+                0 0 0 0 0.65
+                0 0 0 0 0.75
+                0 0 0 -0.7 1"/>
+      <feGaussianBlur stdDeviation="0.7"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.4"/>
+      </feComponentTransfer>
+    </filter>
+  </defs>
+
+  <!-- tło -->
+  <rect x="0" y="0" width="400" height="400" fill="url(#stoneBase)"/>
+
+  <!-- cegły / kamienie -->
+  <g fill="none" stroke="#293243" stroke-width="2">
+    <!-- poziome linie -->
+    <path d="M0 40 H400 M0 80 H400 M0 120 H400 M0 160 H400 M0 200 H400
+             M0 240 H400 M0 280 H400 M0 320 H400 M0 360 H400"/>
+    <!-- pionowe przesunięte, żeby wyglądało jak mur -->
+    <path d="M40 0 V40 M80 0 V40 M120 0 V40 M160 0 V40 M200 0 V40 M240 0 V40 M280 0 V40 M320 0 V40 M360 0 V40"/>
+    <path d="M20 40 V80 M60 40 V80 M100 40 V80 M140 40 V80 M180 40 V80 M220 40 V80 M260 40 V80 M300 40 V80 M340 40 V80 M380 40 V80"/>
+    <path d="M40 80 V120 M80 80 V120 M120 80 V120 M160 80 V120 M200 80 V120 M240 80 V120 M280 80 V120 M320 80 V120 M360 80 V120"/>
+    <!-- dalej podobny pattern -->
+  </g>
+
+  <!-- szum na całość -->
+  <rect x="0" y="0" width="400" height="400" filter="url(#stoneNoise)"/>
+</svg>

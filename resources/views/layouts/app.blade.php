@@ -3,34 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <title>Dziennik Hogwartu</title>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <style>
-        body { font-family: sans-serif; margin: 0; padding: 0; background: #f7f7f7; }
-        header { background: #222; color: #fff; padding: 10px 20px; display:flex; justify-content:space-between; align-items:center; }
-        main { padding: 20px; }
-        .btn { padding: 6px 12px; border-radius: 4px; border: none; cursor: pointer; }
-        .btn-primary { background: #007bff; color: #fff; }
-        .btn-danger  { background: #dc3545; color: #fff; }
-        table { border-collapse: collapse; width: 100%; background:#fff; }
-        th, td { border: 1px solid #ddd; padding: 6px; text-align:left; }
-        th { background:#eee; }
+        /* GLOBAL MAGIC STYLE */
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Georgia', serif;
+            background: url('/images/hogwarts_wall.svg') center/cover fixed;
+            color: #2b2b2b;
+        }
+
+        /* Pergaminowa karta */
+        .scroll {
+            background: url('/images/pergamin_texture.svg') no-repeat center/cover;
+            margin: 30px auto;
+            padding: 40px;
+            max-width: 1000px;
+            border: 4px solid #3a2e1e;
+            box-shadow: 0 0 20px rgba(0,0,0,0.6);
+            border-radius: 8px;
+        }
+
+        header {
+            background: rgba(0,0,0,0.75);
+            color: #f0e6d2;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid #b8860b;
+        }
+
+        header h1 {
+            margin: 0;
+            font-family: 'Georgia', serif;
+            letter-spacing: 2px;
+        }
+
+        .logout-btn {
+            background: #7f0909;
+            border: none;
+            padding: 8px 14px;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .logout-btn:hover {
+            background: #a30c0c;
+        }
+
+        h2 {
+            border-bottom: 2px solid #3a2e1e;
+            padding-bottom: 6px;
+            margin-top: 25px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+            background: rgba(255,255,255,0.85);
+        }
+
+        th, td {
+            padding: 8px;
+            border: 1px solid #b9a37a;
+        }
+
+        th {
+            background: #e8d7b9;
+        }
+
+        /* HERBY DOMÓW */
+        .house-badge {
+            width: 50px;
+            /* height: 50px; */
+        }
+
+        footer {
+            text-align: center;
+            color: #e0d9cd;
+            margin-top: 30px;
+            padding-bottom: 20px;
+            font-size: 14px;
+        }
     </style>
 </head>
+
 <body>
+
 <header>
-    <div><strong>Dziennik Hogwartu</strong></div>
-    <div>
-        @auth
-            Zalogowany jako: {{ auth()->user()->name }} {{ auth()->user()->surname }}
+    <h1>🪄 Dziennik Hogwartu</h1>
+    @auth
+        <div>
+            {{ auth()->user()->name }} {{ auth()->user()->surname }}
+
             <form action="{{ route('logout') }}" method="POST" style="display:inline;">
                 @csrf
-                <button class="btn btn-danger" type="submit">Wyloguj</button>
+                <button class="logout-btn">Wyloguj</button>
             </form>
-        @endauth
-    </div>
+        </div>
+    @endauth
 </header>
-<main>
+
+<div class="scroll">
     @yield('content')
-</main>
+</div>
+
+<footer>
+    © {{ date('Y') }} Hogwart — Szkoła Magii i Czarodziejstwa
+</footer>
+
 </body>
 </html>
