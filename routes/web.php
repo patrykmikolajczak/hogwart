@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\TeacherPointsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -21,7 +22,19 @@ Route::post('/logout', [LoginController::class, 'logout'])
     ->name('logout')
     ->middleware('auth');
 
-// dashboard (po zalogowaniu)
-Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->name('dashboard')
-    ->middleware('auth');
+Route::middleware('auth')->group(function () {
+
+    // dashboard (po zalogowaniu)
+    Route::get('/dashboard', [DashboardController::class, 'index'])
+        ->name('dashboard');
+
+    Route::get('/teacher/points/create', [TeacherPointsController::class, 'create'])
+        ->name('teacher.points.create');
+
+    Route::post('/teacher/points', [TeacherPointsController::class, 'store'])
+        ->name('teacher.points.store');
+    
+    Route::get('/teacher/points/history', [TeacherPointsController::class, 'history'])
+        ->name('teacher.points.history');
+
+});
