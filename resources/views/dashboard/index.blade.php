@@ -23,6 +23,14 @@
         🪄 Przyznaj punkty
     </a>
 
+    <a 
+        href="{{ route('teacher.points.bulk.create') }}"
+        style="margin-right: 10px; text-decoration:none; padding:6px 10px;
+              border-radius:6px; border:1px solid #b9a37a; background:#f5ebd7;"
+    >
+        ✨ Przyznaj punkty seryjnie
+    </a>
+
     <a href="{{ route('teacher.points.history') }}"
        style="text-decoration:none; padding:6px 10px;
               border-radius:6px; border:1px solid #b9a37a; background:#f5ebd7;">

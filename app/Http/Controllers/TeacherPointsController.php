@@ -101,4 +101,98 @@ class TeacherPointsController extends Controller
         return view('teacher.points.history', compact('teacher', 'points'));
     }
 
+    public function createBulk()
+{
+    $teacher = Auth::user();
+
+    if (!$teacher || $teacher->is_teacher == 0) {
+        abort(403, 'To zaklęcie jest tylko dla nauczycieli.');
+    }
+
+    $subjects = $teacher->subjects()->orderBy('name')->get();
+    $classes  = SchoolClass::orderBy('name')->get();
+
+    // Jeśli filtr klasy jest podany (np. z query stringu ?class_id=1),
+    // wczytamy uczniów tej klasy, żeby od razu pokazać tabelę
+    $selectedClassId = request()->query('class_id');
+
+    $students = collect();
+    if ($selectedClassId) {
+        $students = User::where('is_teacher', 0)
+            ->where('class_id', $selectedClassId)
+            ->with(['class', 'house'])
+            ->orderBy('surname')
+            ->orderBy('name')
+            ->get();
+    }
+
+    return view('teacher.points.bulk', compact(
+        'teacher',
+        'subjects',
+        'classes',
+        'students',
+        'selectedClassId'
+    ));
+}
+
+public function storeBulk(Request $request)
+{
+    $teacher = Auth::user();
+
+    if (!$teacher || $teacher->is_teacher == 0) {
+        abort(403, 'To zaklęcie jest tylko dla nauczycieli.');
+    }
+
+    $data = $request->validate([
+        'class_id'   => ['required', 'integer', 'exists:classes,class_id'],
+        'subject_id' => ['required', 'integer', 'exists:subjects,subject_id'],
+        'points'     => ['array'],               // tablica: student_id => punkty
+        'points.*'   => ['nullable', 'integer', 'between:-50,50'],
+    ]);
+
+    // sprawdź, czy nauczyciel ma ten przedmiot
+    if (! $teacher->subjects()->where('subjects.subject_id', $data['subject_id'])->exists()) {
+        return back()
+            ->withErrors(['subject_id' => 'Nie możesz przyznawać punktów z tego przedmiotu.'])
+            ->withInput();
+    }
+
+    $classId = $data['class_id'];
+    $pointsByStudent = $data['points'] ?? [];
+
+    $createdCount = 0;
+
+    foreach ($pointsByStudent as $studentId => $pts) {
+        if ($pts === null || $pts === '' || (int)$pts === 0) {
+            continue; // puste albo 0 – ignorujemy
+        }
+
+        $pts = (int) $pts;
+
+        // upewniamy się, że to uczeń z tej klasy
+        $student = User::where('user_id', $studentId)
+            ->where('class_id', $classId)
+            ->where('is_teacher', 0)
+            ->first();
+
+        if (! $student) {
+            continue;
+        }
+
+        Point::create([
+            'user_id'    => $student->user_id,
+            'teacher_id' => $teacher->user_id,
+            'subject_id' => $data['subject_id'],
+            'points'     => $pts,
+        ]);
+
+        $createdCount++;
+    }
+
+    return redirect()
+        ->route('teacher.points.bulk.create', ['class_id' => $classId])
+        ->with('status', "Dodano zaklęcia punktów: {$createdCount} wpisów.");
+}
+
+
 }

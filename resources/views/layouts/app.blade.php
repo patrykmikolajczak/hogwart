@@ -98,16 +98,22 @@
 
 <header>
     <h1>🪄 Dziennik Hogwartu</h1>
-    @auth
-        <div>
-            {{ auth()->user()->name }} {{ auth()->user()->surname }}
+    <div>
+        <a href="{{ route('public.houses') }}"
+           style="color:#f0e6d2; text-decoration:none; margin-right:15px;">
+            🏆 Ranking domów
+        </a>
+        @auth
+            <div>
+                {{ auth()->user()->name }} {{ auth()->user()->surname }}
 
-            <form action="{{ route('logout') }}" method="POST" style="display:inline;">
-                @csrf
-                <button class="logout-btn">Wyloguj</button>
-            </form>
-        </div>
-    @endauth
+                <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+                    @csrf
+                    <button class="logout-btn">Wyloguj</button>
+                </form>
+            </div>
+        @endauth
+    </div>
 </header>
 
 <div class="scroll">
