@@ -120,7 +120,8 @@
 <h2>✨ Seryjne przyznawanie punktów</h2>
 
 <div class="nav-teacher">
-    <a href="{{ route('teacher.points.create') }}">🪄 Przyznaj punkty (pojedynczo)</a>
+    <a href="{{ route('dashboard') }}">🪄 Dashboard</a>
+    <!-- <a href="{{ route('teacher.points.create') }}">🪄 Przyznaj punkty (pojedynczo)</a> -->
     <a href="{{ route('teacher.points.bulk.create') }}">✨ Przyznaj punkty seryjnie</a>
     <a href="{{ route('teacher.points.history') }}">📜 Historia zaklęć</a>
 </div>
@@ -151,7 +152,7 @@
     <form method="GET" action="{{ route('teacher.points.bulk.create') }}">
         <label for="class_id">📘 Klasa:</label>
         <select name="class_id" id="class_id">
-            <option value="">— wybierz klasę —</option>
+            <option value="">wybierz klasę</option>
             @foreach($classes as $class)
                 <option value="{{ $class->class_id }}"
                     {{ (string)$selectedClassId === (string)$class->class_id ? 'selected' : '' }}>
@@ -162,7 +163,7 @@
 
         <label for="subject_id" style="margin-left:10px;">📚 Przedmiot:</label>
         <select name="subject_id" id="subject_id">
-            <option value="">— wybierz przedmiot —</option>
+            <option value="">wybierz przedmiot</option>
             @foreach($subjects as $subj)
                 <option value="{{ $subj->subject_id }}"
                     {{ old('subject_id') == $subj->subject_id ? 'selected' : '' }}>
@@ -171,9 +172,20 @@
             @endforeach
         </select>
 
+        <label for="point_category_id" style="margin-left:10px;">📚 Kategoria:</label>
+        <select name="point_category_id" id="point_category_id">
+            <option value="">wybierz kategorie</option>
+            @foreach($pointsCategories as $cat)
+                <option value="{{ $cat->point_category_id }}"
+                    {{ (string)$selectedCategoryId === (string)$cat->point_category_id ? 'selected' : '' }}>
+                    {{ $cat->name }}
+                </option>
+            @endforeach
+        </select>
+
         <button type="submit">Pokaż uczniów</button>
         <span class="hint" style="font-size:12px; margin-left:8px;">
-            Najpierw wybierz klasę i przedmiot, potem wprowadzisz punkty.
+            Najpierw wybierz klasę, przedmiot i kategorię, potem wprowadzisz punkty.
         </span>
     </form>
 </div>
@@ -189,6 +201,7 @@
 
         {{-- przekazujemy klasę i przedmiot --}}
         <input type="hidden" name="class_id" value="{{ $selectedClassId }}">
+        <input type="hidden" name="point_category_id" value="{{ $selectedCategoryId }}">
         <input type="hidden" name="subject_id"
                value="{{ old('subject_id', request('subject_id')) }}">
 
@@ -197,6 +210,7 @@
                 <tr>
                     <th>Uczeń</th>
                     <th>Dom</th>
+                    <th>Przyznane punkty</th>
                     <th>Punkty (+/-)</th>
                 </tr>
             </thead>
@@ -219,6 +233,7 @@
                                 {{ $house ?? 'Brak' }}
                             @endif
                         </td>
+                        <td>+{{ $s->points_plus ?? 0 }}/{{ $s->points_minus ?? 0 }}</td>
                         <td>
                             <input type="number"
                                    name="points[{{ $s->user_id }}]"

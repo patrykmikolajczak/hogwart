@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Point;
 use App\Models\SchoolClass;
 use App\Models\User;
+use App\Models\PointCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -111,16 +112,24 @@ class TeacherPointsController extends Controller
 
     $subjects = $teacher->subjects()->orderBy('name')->get();
     $classes  = SchoolClass::orderBy('name')->get();
+    $pointsCategories  = PointCategory::orderBy('point_category_id')->get();
 
     // Jeśli filtr klasy jest podany (np. z query stringu ?class_id=1),
     // wczytamy uczniów tej klasy, żeby od razu pokazać tabelę
     $selectedClassId = request()->query('class_id');
+    $selectedCategoryId = request()->query('point_category_id');
 
     $students = collect();
     if ($selectedClassId) {
         $students = User::where('is_teacher', 0)
             ->where('class_id', $selectedClassId)
             ->with(['class', 'house'])
+            ->withSum(['pointsReceived as points_plus' => function ($q) {
+                $q->where('points', '>', 0);
+            }], 'points')
+            ->withSum(['pointsReceived as points_minus' => function ($q) {
+                $q->where('points', '<', 0);
+            }], 'points')
             ->orderBy('surname')
             ->orderBy('name')
             ->get();
@@ -131,7 +140,9 @@ class TeacherPointsController extends Controller
         'subjects',
         'classes',
         'students',
-        'selectedClassId'
+        'selectedClassId',
+        'selectedCategoryId',
+        'pointsCategories'
     ));
 }
 
@@ -146,6 +157,7 @@ public function storeBulk(Request $request)
     $data = $request->validate([
         'class_id'   => ['required', 'integer', 'exists:classes,class_id'],
         'subject_id' => ['required', 'integer', 'exists:subjects,subject_id'],
+        'point_category_id' => ['required', 'integer', 'exists:points_categories,point_category_id'],
         'points'     => ['array'],               // tablica: student_id => punkty
         'points.*'   => ['nullable', 'integer', 'between:-50,50'],
     ]);
@@ -183,6 +195,7 @@ public function storeBulk(Request $request)
             'user_id'    => $student->user_id,
             'teacher_id' => $teacher->user_id,
             'subject_id' => $data['subject_id'],
+            'point_category_id' => $data['point_category_id'],
             'points'     => $pts,
         ]);
 

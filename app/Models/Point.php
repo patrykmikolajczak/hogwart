@@ -16,6 +16,8 @@ class Point extends Model
         'user_id',
         'teacher_id',
         'subject_id',
+        'house_id',
+        'point_category_id',
         'points',
     ];
 
@@ -32,5 +34,15 @@ class Point extends Model
     public function subject()
     {
         return $this->belongsTo(Subject::class, 'subject_id', 'subject_id');
+    }
+    
+    public function house()
+    {
+        return $this->belongsTo(House::class, 'house_id', 'house_id');
+    }
+    
+    public function pointCategory()
+    {
+        return $this->belongsTo(PointCategory::class, 'point_category_id', 'point_category_id');
     }
 }

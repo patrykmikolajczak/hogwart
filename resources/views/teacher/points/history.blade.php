@@ -70,7 +70,9 @@
 <h2>📜 Historia przyznanych punktów</h2>
 
 <div class="nav-teacher">
-    <a href="{{ route('teacher.points.create') }}">🪄 Przyznaj punkty</a>
+    <a href="{{ route('dashboard') }}">🪄 Dashboard</a>
+    <!-- <a href="{{ route('teacher.points.create') }}">🪄 Przyznaj punkty</a> -->
+    <a href="{{ route('teacher.points.bulk.create') }}">✨ Przyznaj punkty seryjnie</a>
     <a href="{{ route('teacher.points.history') }}">📜 Historia zaklęć</a>
 </div>
 

@@ -6,7 +6,7 @@
 
 <p>Witaj, {{ $user->name }}! Oto aktualne dane z Hogwartu.</p>
 
-@if($user->is_teacher)
+<!-- @if($user->is_teacher)
     <div style="margin: 10px 0 25px 0;">
         <a href="{{ route('teacher.points.create') }}"
            style="display:inline-block; padding:10px 18px; background:#7f0909; color:#fff;
@@ -14,14 +14,14 @@
             🪄 Przyznaj punkty uczniom
         </a>
     </div>
-@endif
+@endif -->
 @if($user->is_teacher)
 <div style="margin: 10px 0 20px 0;">
-    <a href="{{ route('teacher.points.create') }}"
+    <!-- <a href="{{ route('teacher.points.create') }}"
        style="margin-right: 10px; text-decoration:none; padding:6px 10px;
               border-radius:6px; border:1px solid #b9a37a; background:#f5ebd7;">
         🪄 Przyznaj punkty
-    </a>
+    </a> -->
 
     <a 
         href="{{ route('teacher.points.bulk.create') }}"

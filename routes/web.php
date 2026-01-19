@@ -7,9 +7,9 @@ use App\Http\Controllers\PublicRankingController;
 use App\Http\Controllers\StudentPointsController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return redirect()->route('dashboard');
-});
+// Route::get('/', function () {
+//     return redirect()->route('dashboard');
+// });
 
 // logowanie
 Route::get('/login', [LoginController::class, 'showLoginForm'])
@@ -25,6 +25,8 @@ Route::post('/logout', [LoginController::class, 'logout'])
     ->middleware('auth');
 
 Route::get('/ranking-domow', [PublicRankingController::class, 'houses'])
+    ->name('public.houses');
+Route::get('/', [PublicRankingController::class, 'houses'])
     ->name('public.houses');
 
 Route::middleware('auth')->group(function () {

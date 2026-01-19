@@ -99,12 +99,16 @@
 <header>
     <h1>🪄 Dziennik Hogwartu</h1>
     <div>
-        <a href="{{ route('public.houses') }}"
-           style="color:#f0e6d2; text-decoration:none; margin-right:15px;">
-            🏆 Ranking domów
-        </a>
+        @guest
+            <a href="{{ route('login') }}">
+                <img src="/images/wiedzma.png"  style="width:40px"/>
+            </a>
+        @endguest
         @auth
             <div>
+                <a href="{{ route('public.houses') }}" style="color:#f0e6d2; text-decoration:none; margin-right:15px;">
+                    🏆 Ranking domów
+                </a>
                 {{ auth()->user()->name }} {{ auth()->user()->surname }}
 
                 <form action="{{ route('logout') }}" method="POST" style="display:inline;">
