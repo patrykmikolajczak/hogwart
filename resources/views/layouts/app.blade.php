@@ -109,6 +109,9 @@
                 <a href="{{ route('public.houses') }}" style="color:#f0e6d2; text-decoration:none; margin-right:15px;">
                     🏆 Ranking domów
                 </a>
+                <a href="{{ route('dashboard') }}" style="color:#f0e6d2; text-decoration:none; margin-right:15px;">
+                    🪄 Dashboard
+                </a>
                 {{ auth()->user()->name }} {{ auth()->user()->surname }}
 
                 <form action="{{ route('logout') }}" method="POST" style="display:inline;">
