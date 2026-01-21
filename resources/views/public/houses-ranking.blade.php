@@ -74,7 +74,7 @@
             @endphp
 
             <div class="house-card {{ $cssClass }}">
-                <img src="/images/houses/{{ $imgName }}.jpg" alt="{{ $house->name }}">
+                <img src="/images/houses/{{ $imgName }}.png" alt="{{ $house->name }}">
                 <div class="house-name">
                     {{ $position }}. {{ $house->name }}
                 </div>

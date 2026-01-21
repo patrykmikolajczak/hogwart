@@ -28,7 +28,14 @@
         style="margin-right: 10px; text-decoration:none; padding:6px 10px;
               border-radius:6px; border:1px solid #b9a37a; background:#f5ebd7;"
     >
-        ✨ Przyznaj punkty seryjnie
+        ✨ Przyznaj punkty uczniom
+    </a>
+    <a 
+        href="{{ route('teacher.points.houses.create') }}"
+        style="margin-right: 10px; text-decoration:none; padding:6px 10px;
+              border-radius:6px; border:1px solid #b9a37a; background:#f5ebd7;"
+    >
+        ✨ Przyznaj punkty domom
     </a>
 
     <a href="{{ route('teacher.points.history') }}"
@@ -56,7 +63,7 @@
         @foreach($housesRanking as $house)
             <tr>
                 <td>
-                    <img src="/images/houses/{{ strtolower($house->name) }}.jpg" 
+                    <img src="/images/houses/{{ strtolower($house->name) }}.png" 
                          class="house-badge">
                 </td>
                 <td>{{ $house->name }}</td>

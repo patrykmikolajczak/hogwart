@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Point;
 use App\Models\SchoolClass;
+use App\Models\House;
 use App\Models\User;
 use App\Models\PointCategory;
 use Illuminate\Http\Request;
@@ -102,7 +103,7 @@ class TeacherPointsController extends Controller
         return view('teacher.points.history', compact('teacher', 'points'));
     }
 
-    public function createBulk()
+public function createBulk()
 {
     $teacher = Auth::user();
 
@@ -112,7 +113,7 @@ class TeacherPointsController extends Controller
 
     $subjects = $teacher->subjects()->orderBy('name')->get();
     $classes  = SchoolClass::orderBy('name')->get();
-    $pointsCategories  = PointCategory::orderBy('point_category_id')->get();
+    $pointsCategories  = PointCategory::where('tournament', 0)->orderBy('point_category_id')->get();
 
     // Jeśli filtr klasy jest podany (np. z query stringu ?class_id=1),
     // wczytamy uczniów tej klasy, żeby od razu pokazać tabelę
@@ -135,6 +136,11 @@ class TeacherPointsController extends Controller
             ->get();
     }
 
+    // $points = 0;
+    // if ($selectedCategoryId) {
+    //     $points  = PointCategory::where('point_category_id', $selectedCategoryId)->get();
+    // }
+
     return view('teacher.points.bulk', compact(
         'teacher',
         'subjects',
@@ -142,6 +148,7 @@ class TeacherPointsController extends Controller
         'students',
         'selectedClassId',
         'selectedCategoryId',
+        // 'points',
         'pointsCategories'
     ));
 }
@@ -207,5 +214,55 @@ public function storeBulk(Request $request)
         ->with('status', "Dodano zaklęcia punktów: {$createdCount} wpisów.");
 }
 
+public function createHouses()
+{
+    $teacher = Auth::user();
+
+    if (!$teacher || $teacher->is_teacher == 0) {
+        abort(403, 'To zaklęcie jest tylko dla nauczycieli.');
+    }
+
+    $houses  = House::orderBy('name')->get();
+    $pointsCategories  = PointCategory::orderBy('point_category_id')->get();
+
+    return view('teacher.points.houses', compact(
+        'teacher',
+        'houses',
+        'pointsCategories'
+    ));
+}
+
+public function storeHouses(Request $request)
+{
+    $teacher = Auth::user();
+
+    if (!$teacher || $teacher->is_teacher == 0) {
+        abort(403, 'To zaklęcie jest tylko dla nauczycieli.');
+    }
+
+    $data = $request->validate([
+        'house_id' => ['required', 'integer', 'exists:houses,house_id'],
+        'point_category_id' => ['required', 'integer', 'exists:points_categories,point_category_id'],
+        'points'     => ['integer', 'between:-50,50'],
+    ]);
+
+    $createdCount = 0;
+
+    $houseId = $data['house_id'];
+    $pts = (int)$data['points'];
+
+    Point::create([
+        'teacher_id' => $teacher->user_id,
+        'house_id' => $data['house_id'],
+        'point_category_id' => $data['point_category_id'],
+        'points'     => $pts,
+    ]);
+
+    $createdCount++;
+
+    return redirect()
+        ->route('teacher.points.houses.create', ['house_id' => $houseId])
+        ->with('status', "Dodano zaklęcia punktów: {$createdCount} wpisów.");
+}
 
 }

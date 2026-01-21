@@ -72,7 +72,8 @@
 <div class="nav-teacher">
     <a href="{{ route('dashboard') }}">🪄 Dashboard</a>
     <!-- <a href="{{ route('teacher.points.create') }}">🪄 Przyznaj punkty</a> -->
-    <a href="{{ route('teacher.points.bulk.create') }}">✨ Przyznaj punkty seryjnie</a>
+    <a href="{{ route('teacher.points.bulk.create') }}">✨ Przyznaj punkty uczniom</a>
+    <a href="{{ route('teacher.points.houses.create') }}">✨ Przyznaj punkty domom</a>
     <a href="{{ route('teacher.points.history') }}">📜 Historia zaklęć</a>
 </div>
 

@@ -53,5 +53,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/teacher/points/bulk', [TeacherPointsController::class, 'storeBulk'])
         ->name('teacher.points.bulk.store');
 
+    Route::get('/teacher/points/houses', [TeacherPointsController::class, 'createHouses'])
+        ->name('teacher.points.houses.create');
+
+    Route::post('/teacher/points/houses', [TeacherPointsController::class, 'storeHouses'])
+        ->name('teacher.points.houses.store');
+
 
 });
