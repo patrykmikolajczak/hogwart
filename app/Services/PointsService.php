@@ -75,6 +75,7 @@ class PointsService
             ->leftJoin('houses as h', 'p.house_id', '=', 'h.house_id')
             ->whereNull('p.user_id')          // punkty nieprzypisane do ucznia
             ->whereNotNull('p.house_id')      // ale przypisane do domu
+            ->whereIn('p.house_id',[15,16,17,18])
             ->select('h.house_id', 'h.name', DB::raw('SUM(p.points) as total_points'))
             ->groupBy('h.house_id', 'h.name')
             ->get();
