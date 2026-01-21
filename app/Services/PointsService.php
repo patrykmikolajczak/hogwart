@@ -100,7 +100,7 @@ class PointsService
             ->leftJoin('users as u', 'p.user_id', '=', 'u.user_id')
             ->leftJoin('classes as c', 'u.class_id', '=', 'c.class_id')
             ->select('c.class_id', 'c.name', DB::raw('SUM(p.points) as total_points'))
-            ->groupBy('c.class_id')
+            ->groupBy('c.class_id', 'c.name')
             ->orderByDesc('total_points')
             ->limit($limit)
             ->get();
