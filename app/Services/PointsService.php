@@ -25,6 +25,7 @@ class PointsService
             ->where('u.class_id', $classId)
             ->groupBy('u.user_id', 'u.name', 'u.surname')
             ->orderByDesc('total_points')
+            ->whereNull('u.deleted_at')
             ->get();
     }
 
@@ -34,13 +35,15 @@ class PointsService
         $userPoints = DB::table('users as u')
             ->join('points as p', 'p.user_id', '=', 'u.user_id')
             ->select('u.house_id', DB::raw('SUM(p.points) as user_points'))
-            ->groupBy('u.house_id');
+            ->groupBy('u.house_id')
+            ->whereNull('p.deleted_at');
 
         $houseDirectPoints = DB::table('points as p2')
             ->whereNull('p2.user_id')          // punkty nieprzypisane do ucznia
             ->whereNotNull('p2.house_id')      // ale przypisane do domu
             ->select('p2.house_id', DB::raw('SUM(p2.points) as house_points'))
-            ->groupBy('p2.house_id');
+            ->groupBy('p2.house_id')
+            ->whereNull('p2.deleted_at');
 
         $ranking = DB::table('houses as h')
             ->leftJoinSub($userPoints, 'up', function ($join) {
@@ -78,6 +81,7 @@ class PointsService
             ->whereIn('p.point_category_id',[15,16,17,18])
             ->select('h.house_id', 'h.name', DB::raw('SUM(p.points) as total_points'))
             ->groupBy('h.house_id', 'h.name')
+            ->whereNull('p.deleted_at')
             ->get();
 
         return $ranking;
@@ -91,6 +95,7 @@ class PointsService
             ->select('u.user_id', 'u.name', 'u.surname', DB::raw('SUM(p.points) as total_points'))
             ->groupBy('u.user_id', 'u.name', 'u.surname')
             ->orderByDesc('total_points')
+            ->whereNull('p.deleted_at')
             ->limit($limit)
             ->get();
     }
@@ -103,6 +108,7 @@ class PointsService
             ->select('c.class_id', 'c.name', DB::raw('SUM(p.points) as total_points'))
             ->groupBy('c.class_id', 'c.name')
             ->orderByDesc('total_points')
+            ->whereNull('p.deleted_at')
             ->limit($limit)
             ->get();
     }
