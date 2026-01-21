@@ -76,7 +76,7 @@ class PointsService
             ->whereNull('p.user_id')          // punkty nieprzypisane do ucznia
             ->whereNotNull('p.house_id')      // ale przypisane do domu
             ->select('h.house_id', 'h.name', DB::raw('SUM(p.points) as total_points'))
-            ->groupBy('p.house_id')
+            ->groupBy('h.house_id', 'h.name')
             ->get();
 
         return $ranking;
