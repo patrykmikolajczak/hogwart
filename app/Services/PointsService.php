@@ -31,13 +31,41 @@ class PointsService
     // Punkty domów
     public function getHousesRanking()
     {
-        return DB::table('houses as h')
-            ->leftJoin('users as u', 'u.house_id', '=', 'h.house_id')
-            ->leftJoin('points as p', 'p.user_id', '=', 'u.user_id')
-            ->select('h.house_id', 'h.name', DB::raw('COALESCE(SUM(p.points),0) as total_points'))
-            ->groupBy('h.house_id', 'h.name')
+        $userPoints = DB::table('users as u')
+            ->join('points as p', 'p.user_id', '=', 'u.user_id')
+            ->select('u.house_id', DB::raw('SUM(p.points) as user_points'))
+            ->groupBy('u.house_id');
+
+        $houseDirectPoints = DB::table('points as p2')
+            ->whereNull('p2.user_id')          // punkty nieprzypisane do ucznia
+            ->whereNotNull('p2.house_id')      // ale przypisane do domu
+            ->select('p2.house_id', DB::raw('SUM(p2.points) as house_points'))
+            ->groupBy('p2.house_id');
+
+        $ranking = DB::table('houses as h')
+            ->leftJoinSub($userPoints, 'up', function ($join) {
+                $join->on('up.house_id', '=', 'h.house_id');
+            })
+            ->leftJoinSub($houseDirectPoints, 'hp', function ($join) {
+                $join->on('hp.house_id', '=', 'h.house_id');
+            })
+            ->select(
+                'h.house_id',
+                'h.name',
+                DB::raw('COALESCE(up.user_points,0) + COALESCE(hp.house_points,0) as total_points')
+            )
             ->orderByDesc('total_points')
             ->get();
+
+        return $ranking;
+        // return DB::table('houses as h')
+        //     ->leftJoin('users as u', 'u.house_id', '=', 'h.house_id')
+        //     ->leftJoin('points as p', 'p.user_id', '=', 'u.user_id')
+        //     ->leftJoin('points as p2', 'p2.house_id', '=', 'h.house_id')
+        //     ->select('h.house_id', 'h.name', DB::raw('COALESCE(SUM(p.points),0) as total_points'))
+        //     ->groupBy('h.house_id', 'h.name')
+        //     ->orderByDesc('total_points')
+        //     ->get();
     }
 
     // Top N nauczycieli wg przyznanych punktów
