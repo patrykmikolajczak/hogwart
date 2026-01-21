@@ -12,4 +12,11 @@ class PublicRankingController extends Controller
 
         return view('public.houses-ranking', compact('housesRanking'));
     }
+
+    public function tournament(PointsService $pointsService)
+    {
+        $housesRanking = $pointsService->getTournamentRanking();
+
+        return view('public.tournament-ranking', compact('housesRanking'));
+    }
 }

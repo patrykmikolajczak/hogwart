@@ -119,13 +119,13 @@
 
 <h2>✨ Seryjne przyznawanie punktów</h2>
 
-<!-- <div class="nav-teacher">
-    <a href="{{ route('dashboard') }}">🪄 Dashboard</a> -->
+<div class="nav-teacher">
+    <a href="{{ route('dashboard') }}">🪄 Dashboard</a>
     <!-- <a href="{{ route('teacher.points.create') }}">🪄 Przyznaj punkty (pojedynczo)</a> -->
-    <!-- <a href="{{ route('teacher.points.bulk.create') }}">✨ Przyznaj punkty uczniom</a>
+    <a href="{{ route('teacher.points.bulk.create') }}">✨ Przyznaj punkty uczniom</a>
     <a href="{{ route('teacher.points.houses.create') }}">✨ Przyznaj punkty domom</a>
     <a href="{{ route('teacher.points.history') }}">📜 Historia zaklęć</a>
-</div> -->
+</div>
 
 <p>
     {{ $teacher->name }} {{ $teacher->surname }}, tutaj możesz przyznać lub odjąć punkty

@@ -26,6 +26,8 @@ Route::post('/logout', [LoginController::class, 'logout'])
 
 Route::get('/ranking-domow', [PublicRankingController::class, 'houses'])
     ->name('public.houses');
+Route::get('/turniej-domow', [PublicRankingController::class, 'tournament'])
+    ->name('public.tournament');
 Route::get('/', [PublicRankingController::class, 'houses'])
     ->name('public.houses');
 

@@ -68,6 +68,20 @@ class PointsService
         //     ->get();
     }
 
+    public function getTournamentRanking()
+    {
+
+        $ranking = DB::table('points as p')
+            ->leftJoin('houses as h', 'p.house_id', '=', 'h.house_id')
+            ->whereNull('p.user_id')          // punkty nieprzypisane do ucznia
+            ->whereNotNull('p.house_id')      // ale przypisane do domu
+            ->select('h.house_id', 'h.name', DB::raw('SUM(p.points) as total_points'))
+            ->groupBy('p.house_id')
+            ->get();
+
+        return $ranking;
+    }
+
     // Top N nauczycieli wg przyznanych punktów
     public function getTopTeachers(int $limit = 10)
     {
@@ -75,6 +89,18 @@ class PointsService
             ->leftJoin('users as u', 'p.teacher_id', '=', 'u.user_id')
             ->select('u.user_id', 'u.name', 'u.surname', DB::raw('SUM(p.points) as total_points'))
             ->groupBy('u.user_id', 'u.name', 'u.surname')
+            ->orderByDesc('total_points')
+            ->limit($limit)
+            ->get();
+    }
+
+    public function getTopClasses(int $limit = 10)
+    {
+        return DB::table('points as p')
+            ->leftJoin('users as u', 'p.user_id', '=', 'u.user_id')
+            ->leftJoin('classes as c', 'u.class_id', '=', 'c.class_id')
+            ->select('c.class_id', 'c.name', DB::raw('SUM(p.points) as total_points'))
+            ->groupBy('c.class_id')
             ->orderByDesc('total_points')
             ->limit($limit)
             ->get();

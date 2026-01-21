@@ -18,13 +18,20 @@ class DashboardController extends Controller
 
         $housesRanking = $this->pointsService->getHousesRanking();
         $topTeachers   = $this->pointsService->getTopTeachers(5);
+        $topClasses   = $this->pointsService->getTopClasses(5);
 
         $classRanking = null;
         if (!$user->is_teacher && $user->class_id) {
             $classRanking = $this->pointsService->getClassRanking($user->class_id);
         }
 
-        return view('dashboard.index', compact('user', 'housesRanking', 'topTeachers', 'classRanking'));
+        return view('dashboard.index', compact(
+            'user',
+            'housesRanking',
+            'topTeachers',
+            'topClasses',
+            'classRanking'
+        ));
     }
 }
 

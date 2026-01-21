@@ -2,8 +2,6 @@
 
 @section('content')
 
-<img src="/images/prymus-logo.png" style="width:200px;"/>
-
 <h2>Wejście do Hogwartu</h2>
 <p>Aby dostać się na teren zamku, podaj swoje dane.</p>
 

@@ -1,9 +1,9 @@
-@extends('layouts.app')
+@extends('layouts.app2')
 
 @section('content')
 <!-- <div class="row g-5">
     <div class="col-md-12"> -->
-        <h2>🏆 Ranking Domów Hogwartu</h2>
+        <h2>🏆 Ranking Turnieju Czwórmagicznego</h2>
         <p>
             Strona dostępna dla każdego – nawet dla mugoli. <br>
             Tu zobaczysz, który dom aktualnie prowadzi w rywalizacji o Puchar Domów.
