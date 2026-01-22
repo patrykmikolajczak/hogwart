@@ -58,8 +58,8 @@
                     <li><a href="{{ route('dashboard') }}" class="nav-link px-2 text-secondary"><img src="/images/dashboard.png" width="150px;"/></a></li>
                     <li><a href="{{ route('public.houses') }}" class="nav-link px-2 text-white"><img src="/images/punkty.png" width="150px;"/></a></li>
                     <li><a href="{{ route('public.tournament') }}" class="nav-link px-2 text-white"><img src="/images/turniej.png" width="150px;"/></a></li>
-                    <li><a href="#" class="nav-link px-2 text-white"><img src="/images/statystyki.png" width="150px;"/></a></li>
-                    <li><a href="#" class="nav-link px-2 text-white"><img src="/images/ustawienia.png" width="150px;"/></a></li>
+                    <li><a href="{{ route('statistics') }}" class="nav-link px-2 text-white"><img src="/images/statystyki.png" width="150px;"/></a></li>
+                    <li><a href="{{ route('settings.index') }}" class="nav-link px-2 text-white"><img src="/images/ustawienia.png" width="150px;"/></a></li>
                 </ul>
                 @endauth
                 @guest

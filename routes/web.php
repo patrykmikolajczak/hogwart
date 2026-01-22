@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\TeacherPointsController;
 use App\Http\Controllers\PublicRankingController;
 use App\Http\Controllers\StudentPointsController;
@@ -36,6 +38,14 @@ Route::middleware('auth')->group(function () {
     // dashboard (po zalogowaniu)
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
+
+    Route::get('/ustawienia', [SettingsController::class, 'index'])
+        ->name('settings.index');
+    Route::post('/ustawienia', [SettingsController::class, 'updatePassword'])
+        ->name('settings.password');
+
+    Route::get('/statystyki', [StatisticsController::class, 'index'])
+        ->name('statistics');
 
     Route::get('/teacher/points/create', [TeacherPointsController::class, 'create'])
         ->name('teacher.points.create');
