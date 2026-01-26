@@ -46,6 +46,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/statystyki', [StatisticsController::class, 'index'])
         ->name('statistics');
+    Route::get('/statystyki/klasy-dzien', [StatisticsController::class, 'classDaily'])
+        ->name('statistics.class.daily');
 
     Route::get('/teacher/points/create', [TeacherPointsController::class, 'create'])
         ->name('teacher.points.create');
