@@ -59,10 +59,23 @@
     }
     .sticky-col-2 {
         position: sticky;
-        left: 220px;
+        left: 120px;
         background: rgba(255,255,255,0.98);
         z-index: 3;
     }
+
+    .house-badge {
+        display: inline-block;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 12px;
+        color: #fff;
+        white-space: nowrap;
+    }
+    .house-gryffindor { background:#7f0909; }
+    .house-slytherin  { background:#0d6217; }
+    .house-ravenclaw  { background:#0e1a40; }
+    .house-hufflepuff { background:#eee117; color:#000; }
 </style>
 
 <h2>📊 Statystyki klasy – punkty dzienne</h2>
@@ -99,8 +112,8 @@
         <table class="stats-table">
             <thead>
                 <tr>
-                    <th class="sticky-col" style="min-width:220px;">Uczeń</th>
-                    <th class="sticky-col-2" style="min-width:120px;">Suma okresu</th>
+                    <th class="sticky-col" style="min-width:120px;">Suma okresu</th>
+                    <th class="sticky-col-2" style="min-width:180px;">Uczeń</th>
                     @foreach($days as $day)
                         <th style="min-width:110px;">
                             {{ \Carbon\Carbon::parse($day)->format('d.m') }}
@@ -116,12 +129,26 @@
                     @endphp
                     <tr>
                         <td class="sticky-col">
-                            {{ $s->surname }} {{ $s->name }}
-                        </td>
-
-                        <td class="sticky-col-2">
                             <div class="cell-total">{{ $t['total'] }}</div>
                             <div class="cell-sub">+{{ $t['plus'] }} / {{ $t['minus'] }}</div>
+                        </td>
+                        <td class="sticky-col-2">
+                            {{ $s->surname }} {{ $s->name }}</br>
+                            @php
+                                $houseName = $s->house->name ?? null;
+                                $houseClass = match($houseName) {
+                                    'Gryffindor' => 'house-badge house-gryffindor',
+                                    'Slytherin'  => 'house-badge house-slytherin',
+                                    'Ravenclaw' => 'house-badge house-ravenclaw',
+                                    'Hufflepuff'=> 'house-badge house-hufflepuff',
+                                    default     => 'house-badge',
+                                };
+                            @endphp
+                            @if($houseName)
+                                <span class="{{ $houseClass }}">{{ $houseName }}</span>
+                            @else
+                                —
+                            @endif
                         </td>
 
                         @foreach($days as $day)

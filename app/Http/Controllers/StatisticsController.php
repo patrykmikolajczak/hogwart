@@ -50,10 +50,11 @@ class StatisticsController extends Controller
         if ($classId) {
             // Uczniowie klasy
             $students = User::where('is_teacher', 0)
+                ->with('house')
                 ->where('class_id', $classId)
                 ->orderBy('surname')
                 ->orderBy('name')
-                ->get(['user_id', 'name', 'surname']);
+                ->get(['user_id', 'name', 'surname', 'house_id']);
 
             // Agregaty punktów per uczeń per dzień
             $rows = DB::table('points as p')
