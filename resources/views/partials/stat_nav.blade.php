@@ -6,6 +6,11 @@
                     <span class="ribbon-text">Punkty klasy</span>
                 </a>
             </div>
+            <div class="col-12 col-md">
+                <a href="{{ route('statistics.class.categories') }}" class="ribbon-button">
+                    <span class="ribbon-text">Punkty kategorie</span>
+                </a>
+            </div>
         </div>
     </div>
 </div>
