@@ -108,6 +108,7 @@ class PointsService
             ->select('c.class_id', 'c.name', DB::raw('SUM(p.points) as total_points'))
             ->groupBy('c.class_id', 'c.name')
             ->orderByDesc('total_points')
+            ->whereNotNull('u.class_id')
             ->whereNull('p.deleted_at')
             ->limit($limit)
             ->get();
