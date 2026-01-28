@@ -50,7 +50,7 @@
     <div class="col-12 col-md-6">
         <h2>🧙‍♂️ Najaktywniejsi Nauczyciele</h2>
 
-        <table>
+        <table class="table table-striped">
             <thead>
                 <tr>
                     <th>Nauczyciel</th>
@@ -70,7 +70,7 @@
     <div class="col-12 col-md-6">
         <h2>🧙 Najaktywniejsze klasy</h2>
 
-        <table>
+        <table class="table table-striped">
             <thead>
                 <tr>
                     <th>Klasa</th>

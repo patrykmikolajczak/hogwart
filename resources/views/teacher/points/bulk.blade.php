@@ -93,7 +93,7 @@
                 <input type="hidden" name="subject_id"
                     value="{{ old('subject_id', request('subject_id')) }}">
 
-                <table class="bulk-table">
+                <table class="table table-striped">
                     <thead>
                         <tr>
                             <th>Uczeń</th>
