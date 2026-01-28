@@ -85,7 +85,7 @@
 @if($points->isEmpty())
     <p>Nie przyznałeś jeszcze żadnych punktów. Czas rzucić pierwsze zaklęcie! 🪄</p>
 @else
-    <table class="table table-striped">
+    <table class="table table-dark table-striped">
         <thead>
             <tr>
                 <th>Data</th>
